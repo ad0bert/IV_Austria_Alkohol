@@ -27,7 +27,7 @@ function onLoadFunction(){
 		},
 		
 		"titles": [ {
-      "text": "Alcohol consumtion growth in Austria"
+      "text": "Alcohol consumtion change in Austria"
     } ],
     
 		"listeners": [ {
