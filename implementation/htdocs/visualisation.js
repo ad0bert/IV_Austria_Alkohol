@@ -3,7 +3,7 @@ function onLoadFunction(){
 	var map = AmCharts.makeChart( "chartdiv", {
 		"type": "map",
 		"theme": "none",
-		"colorSteps": 10,
+		"colorSteps": 5,
 		"dataProvider": {
 		  "mapURL": "pics/austriaLow.svg",
 		  "getAreasFromMap": true,
@@ -19,7 +19,7 @@ function onLoadFunction(){
 		"valueLegend": {
 		  "right": 10,
 		  "minValue": "reduction",
-		  "maxValue": "high growth"
+		  "maxValue": "growth"
 		},
 		
 		"zoomControl": {
