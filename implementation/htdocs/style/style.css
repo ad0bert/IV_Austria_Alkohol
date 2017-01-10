@@ -1,0 +1,41 @@
+@import url(https://fonts.googleapis.com/css?family=Lato);
+
+html,
+body {
+  width: 100%;
+  height: 500px;
+  margin: 0px;
+  font-family: Lato;
+}
+
+#chartdiv {
+  width: 100%;
+  height: 100%;
+}
+
+#info {
+  text-align: center;
+}
+
+.ammapDescriptionWindow {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border-radius: 4px;
+  border: 2px solid rgba(255, 255, 255, 1);
+}
+
+.ammapDescriptionTitle {
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.ammapDescriptionText {
+  max-height: 200px;
+  overflow: auto;
+}
+
+.ammapDescriptionText img,
+.ammapDescriptionText p {
+  max-width: 95%;
+}
