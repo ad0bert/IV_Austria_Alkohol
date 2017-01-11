@@ -72,10 +72,10 @@ function createBars(barToCreate, state, title){
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     d3.csv("data.csv", type, function(error, data) { // no data in the csv we read just the format
-      data[0].global = barToCreate("Overall")[0] / getInhebitants("Overall")[0];
-      data[0].local  = barToCreate(state)[0] / getInhebitants(state)[0];      
-      data[1].global = barToCreate("Overall")[1] / getInhebitants("Overall")[1];;
-      data[1].local  = barToCreate(state)[1] / getInhebitants(state)[1];
+      data[0].global = (barToCreate("Overall")[0] / getInhebitants("Overall")[0]) * 100;
+      data[0].local  = (barToCreate(state)[0] / getInhebitants(state)[0]) * 100;
+      data[1].global = (barToCreate("Overall")[1] / getInhebitants("Overall")[1]) * 100;
+      data[1].local  = (barToCreate(state)[1] / getInhebitants(state)[1]) * 100;
       
       x.domain(data.map(function(d) {
         return d.date;
