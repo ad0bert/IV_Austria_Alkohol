@@ -71,7 +71,7 @@ function createBars(barToCreate, maxScale, state, title){
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    d3.csv("data.csv", type, function(error, data) { // no data in the csv we read just the format
+    d3.csv("template/data.csv", type, function(error, data) { // no data in the csv we read just the format
       data[0].global = (barToCreate("Overall")[0] / getInhebitants("Overall")[0]) * 100;
       data[0].local  = (barToCreate(state)[0] / getInhebitants(state)[0]) * 100;
       data[1].global = (barToCreate("Overall")[1] / getInhebitants("Overall")[1]) * 100;
