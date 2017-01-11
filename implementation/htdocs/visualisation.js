@@ -40,79 +40,121 @@ function onLoadFunction(){
 
 }
 
-function updateInfo(event){
-  d3.select("#info").selectAll("*").remove();
+function createBars(barToCreate, state, title){
+    var margin = {
+        top: 20,
+        right: 20,
+        bottom: 30,
+        left: 40
+    },
+    
+    width = 300 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
 
-  document.getElementById( "info" ).innerHTML = '<p>' + event.mapObject.title + '</p>';
-  
-  var margin = {top: 20, right: 20, bottom: 70, left: 40},
-      width = 600 - margin.left - margin.right,
-      height = 300 - margin.top - margin.bottom;
+    var x = d3.scale.ordinal()
+      .rangeRoundBands([0, width], .1);
 
-  // Parse the date / time
-  var	parseDate = d3.time.format("%Y-%m").parse;
+    var y = d3.scale.linear()
+      .range([height, 0]);
 
-  var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
-
-  var y = d3.scale.linear().range([height, 0]);
-
-  var xAxis = d3.svg.axis()
+    var xAxis = d3.svg.axis()
       .scale(x)
-      .orient("bottom")
-      .tickFormat(d3.time.format("%Y-%m"));
+      .orient("bottom");
 
-  var yAxis = d3.svg.axis()
+    var yAxis = d3.svg.axis()
       .scale(y)
-      .orient("left")
-      .ticks(10);
+      .orient("left");
 
-  var svg = d3.select("#info").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", 
-          "translate(" + margin.left + "," + margin.top + ")");
+    var svg = d3.select("#info").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  d3.csv("bar-data.csv", function(error, data) {
-    data.forEach(function(d) {
-        d.date = parseDate(d.date);
-        d.value = +d.value;
-    });
-	
-    x.domain(data.map(function(d) { return d.date; }));
-    y.domain([0, d3.max(data, function(d) { return d.value; })]);
+    d3.csv("data.csv", type, function(error, data) { // no data in the csv we read just the format
+      data[0].global = barToCreate("Overall")[0] / getInhebitants("Overall")[0];
+      data[0].local  = barToCreate(state)[0] / getInhebitants(state)[0];      
+      data[1].global = barToCreate("Overall")[1] / getInhebitants("Overall")[1];;
+      data[1].local  = barToCreate(state)[1] / getInhebitants(state)[1];
+      
+      x.domain(data.map(function(d) {
+        return d.date;
+      }));
+      y.domain([0, d3.max(data, function(d) {
+        return d.global;
+      })]);
 
-    svg.append("g")
+	  svg.append("text")
+        .attr("x", (width / 2))             
+        .attr("y", 0 - (margin.top / 2))
+        .attr("text-anchor", "middle")  
+        .style("font-size", "14px") 
+        .style("text-decoration", "underline")  
+        .text(title);
+
+      svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
-        .call(xAxis)
-        .selectAll("text")
-        .style("text-anchor", "end")
-        .attr("dx", "-.8em")
-        .attr("dy", "-.55em")
-        .attr("transform", "rotate(-90)" );
+        .call(xAxis);
 
-    svg.append("g")
+      svg.append("g")
         .attr("class", "y axis")
         .call(yAxis)
-      .append("text")
+        .append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", 6)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
-        .text("Value ($)");
+        .text("% Per Inhebitant");
 
-    svg.selectAll("bar")
+      var g = svg.selectAll(".bars")
         .data(data)
-        .enter().append("rect")
-        .style("fill", "steelblue")
-        .attr("x", function(d) { return x(d.date); })
+        .enter().append("g")
+        
+      g.append("rect")
+        .attr("class", "bar1")
+        .attr("x", function(d) {
+          return x(d.date) + 10; // center it
+        })
+        .attr("width", x.rangeBand() - 20) // make it slimmer
+        .attr("y", function(d) {
+          return y(d.local);
+        })
+        .attr("height", function(d) {
+          return height - y(d.local);
+        });
+      
+      g.append("rect")
+        .attr("class", "bar2")
+        .attr("x", function(d) {
+          return x(d.date);
+        })
         .attr("width", x.rangeBand())
-        .attr("y", function(d) { return y(d.value); })
-        .attr("height", function(d) { return height - y(d.value); });
+        .attr("y", function(d) {
+          return y(d.global);
+        })
+        .attr("height", function(d) {
+          return height - y(d.global);
+        });
 
-  });
+    });
 
+    function type(d) {
+      d.global = +d.global;
+      d.local = +d.local;
+      return d;
+    }
+}
+
+function updateInfo(event){
+  d3.select("#info").selectAll("*").remove();
+
+  document.getElementById( "info" ).innerHTML = '<p>' + event.mapObject.title + '</p><br>';
+  
+  createBars(getUnemployment, event.mapObject.title, "Unemployment");
+  createBars(getGraduates, event.mapObject.title, "Graduates");
+  createBars(getForeignWorkers, event.mapObject.title, "ForeignWorkers");
+ 
 }
 
 function updateHeatmap( event ) {
