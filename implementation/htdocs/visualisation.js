@@ -40,7 +40,7 @@ function onLoadFunction(){
 
 }
 
-function createBars(barToCreate, state, title){
+function createBars(barToCreate, maxScale, state, title){
     var margin = {
         top: 20,
         right: 20,
@@ -81,7 +81,7 @@ function createBars(barToCreate, state, title){
         return d.date;
       }));
       y.domain([0, d3.max(data, function(d) {
-        return d.global;
+        return maxScale;
       })]);
 
 	  svg.append("text")
@@ -151,9 +151,9 @@ function updateInfo(event){
 
   document.getElementById( "info" ).innerHTML = '<p>' + event.mapObject.title + '</p><br>';
   
-  createBars(getUnemployment, event.mapObject.title, "Unemployment");
-  createBars(getGraduates, event.mapObject.title, "Graduates");
-  createBars(getForeignWorkers, event.mapObject.title, "ForeignWorkers");
+  createBars(getUnemployment, 4, event.mapObject.title, "Unemployment");
+  createBars(getGraduates, 16, event.mapObject.title, "Graduates");
+  createBars(getForeignWorkers, 9, event.mapObject.title, "ForeignWorkers");
  
 }
 
