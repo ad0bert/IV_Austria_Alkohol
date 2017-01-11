@@ -91,6 +91,8 @@ function createBars(barToCreate, maxScale, state, title){
         .style("font-size", "14px") 
         .style("text-decoration", "underline")  
         .text(title);
+		
+	 
 
       svg.append("g")
         .attr("class", "x axis")
@@ -123,7 +125,7 @@ function createBars(barToCreate, maxScale, state, title){
         .attr("height", function(d) {
           return height - y(d.local);
         });
-      
+		      
       g.append("rect")
         .attr("class", "bar2")
         .attr("x", function(d) {
@@ -136,7 +138,7 @@ function createBars(barToCreate, maxScale, state, title){
         .attr("height", function(d) {
           return height - y(d.global);
         });
-
+		
     });
 
     function type(d) {
