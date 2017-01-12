@@ -1,5 +1,8 @@
 function onLoadFunction(){
 
+	/**
+	Settings for the Heatmap
+	*/
 	var map = AmCharts.makeChart( "chartdiv", {
 		"type": "map",
 		"theme": "none",
@@ -40,6 +43,13 @@ function onLoadFunction(){
 
 }
 
+/**
+Creates a new Bar-chart and shows it
+@barToCreate defines the values which should be taken from lookupValues.js
+@maxScale defines the scaling for the y-axis of the bar-chart
+@state The Austrian State for which the values should be used
+@title The name d3.js should show next to the chart
+*/
 function createBars(barToCreate, maxScale, state, title){
     var margin = {
         top: 20,
@@ -71,6 +81,7 @@ function createBars(barToCreate, maxScale, state, title){
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+	// get the values from the csv so d3.js knows ow to use them, them overwrite them with the desired values
     d3.csv("template/data.csv", type, function(error, data) { // no data in the csv we read just the format
       data[0].global = (barToCreate("Overall")[0] / getInhebitants("Overall")[0]) * 100;
       data[0].local  = (barToCreate(state)[0] / getInhebitants(state)[0]) * 100;
@@ -109,6 +120,7 @@ function createBars(barToCreate, maxScale, state, title){
         .style("text-anchor", "end")
         .text("% Per Inhebitant");
 
+	  //make the smaller Bar
       var g = svg.selectAll(".bars")
         .data(data)
         .enter().append("g")
@@ -125,7 +137,8 @@ function createBars(barToCreate, maxScale, state, title){
         .attr("height", function(d) {
           return height - y(d.local);
         });
-		      
+      
+	  // make the overlapping bigger bar
       g.append("rect")
         .attr("class", "bar2")
         .attr("x", function(d) {
@@ -139,6 +152,9 @@ function createBars(barToCreate, maxScale, state, title){
           return height - y(d.global);
         });
 		
+		
+	  
+
     });
 
     function type(d) {
@@ -148,6 +164,9 @@ function createBars(barToCreate, maxScale, state, title){
     }
 }
 
+/**
+Updates the Bar chart when the selcetion on the map is changed
+*/
 function updateInfo(event){
   d3.select("#info").selectAll("*").remove();
 
@@ -159,6 +178,9 @@ function updateInfo(event){
  
 }
 
+/**
+Updates the Heatmap with the alcohol-consumption values from lookupValues
+*/
 function updateHeatmap( event ) {
 	var map = event.chart;
 	if ( map.dataGenerated )
