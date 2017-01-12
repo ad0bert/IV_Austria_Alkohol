@@ -45,7 +45,7 @@ function onLoadFunction(){
 
 /**
 Creates a new Bar-chart and shows it
-@barToCreate defines the values which should be taken from lookupValues.js
+@barToCreate function to be called to get the values from the lookup table
 @maxScale defines the scaling for the y-axis of the bar-chart
 @state The Austrian State for which the values should be used
 @title The name d3.js should show next to the chart
