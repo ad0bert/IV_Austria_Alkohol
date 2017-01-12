@@ -8,6 +8,11 @@ body {
   font-family: Lato;
 }
 
+img {
+	width:  10px;
+	height: 10px;
+}
+
 #chartdiv {
   width: 100%;
   height: 100%;
